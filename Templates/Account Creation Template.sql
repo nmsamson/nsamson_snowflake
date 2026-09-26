@@ -30,7 +30,7 @@ This notebook contains multiple variables that will need to be set before runnin
 - admin_email: e-mail address for the admin user
   - this should be a valid e-mail address
   - can be lowercase, mixed case, or uppercase
-  - ex: '' -> 'admin@company.com'"
+  - ex: '' -> 'admin@company.com'
 - edition: Snowflake edition for the new account
   - can be different from the other accounts in the org
   - options:
