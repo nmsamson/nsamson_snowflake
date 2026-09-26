@@ -48,7 +48,7 @@ To set a different suffix for the roles, change the variables in "Set Role Names
 read_role_name = '{{read_role_name}}' <- '{{schema_name}}_READ'
 modify_role_name = '{{modify_role_name}}' <- '{{schema_name}}_MODIFY'
 build_role_name = '{{build_role_name}}' <- '{{schema_name}}_BUILD'
-engineer_role_name = '{{engineer_role_name}}' <- '{{schema_name}}_ARCHITECT'
+engineer_role_name = '{{engineer_role_name}}' <- '{{schema_name}}_ENGINEER'
 */
 
 -- use sysadmin (owner) to create the schema

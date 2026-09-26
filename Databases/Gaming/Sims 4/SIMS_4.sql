@@ -23,9 +23,9 @@ Prerequisites:
 */
 
 /*
-database_name = '{{database_name}}'
-schema_name = '{{schema_name}}'
-schema_comment = '{{schema_comment}}'
+database_name = 'GAMING'
+schema_name = 'SIMS_4'
+schema_comment = 'Schema used for storing Sims 4 game data.'
 */
 
 /*
@@ -45,10 +45,10 @@ To set a different suffix for the roles, change the variables in "Set Role Names
 
 /*
 # this is a calculated variable used later; only change if a different read-only role suffix is needed
-read_role_name = '{{read_role_name}}' <- '{{schema_name}}_READ'
-modify_role_name = '{{modify_role_name}}' <- '{{schema_name}}_MODIFY'
-build_role_name = '{{build_role_name}}' <- '{{schema_name}}_BUILD'
-engineer_role_name = '{{engineer_role_name}}' <- '{{schema_name}}_ARCHITECT'
+read_role_name = 'SIMS_4_READ' <- 'SIMS_4_READ'
+modify_role_name = 'SIMS_4_MODIFY' <- 'SIMS_4_MODIFY'
+build_role_name = 'SIMS_4_BUILD' <- 'SIMS_4_BUILD'
+engineer_role_name = 'SIMS_4_ENGINEER' <- 'SIMS_4_ENGINEER'
 */
 
 -- use sysadmin (owner) to create the schema
@@ -56,13 +56,13 @@ USE ROLE SYSADMIN;
 
 -- create the schema
 -- managed access means the owner of the schema owns all objects within the schema
-CREATE SCHEMA IF NOT EXISTS {{database_name}}.{{schema_name}}
+CREATE SCHEMA IF NOT EXISTS GAMING.SIMS_4
     WITH MANAGED ACCESS
-    COMMENT = '{{schema_comment}}'
+    COMMENT = 'Schema used for storing Sims 4 game data.'
 ;
 
 -- confirm the new schema was created
-SHOW SCHEMAS LIKE '{{schema_name}}' IN DATABASE {{database_name}};
+SHOW SCHEMAS LIKE 'SIMS_4' IN DATABASE GAMING;
 
 /*
 ## Read-only Database Role Creation
@@ -76,63 +76,63 @@ This role allows read-only access to the schema.
 USE ROLE SECURITYADMIN;
 
 -- use database to create the database role
-USE DATABASE {{database_name}};
+USE DATABASE GAMING;
 
 -- create database role for read access
-CREATE DATABASE ROLE IF NOT EXISTS {{database_name}}.{{read_role_name}}
-    COMMENT = 'Role for read-only access to {{database_name}} {{schema_name}} schema'
+CREATE DATABASE ROLE IF NOT EXISTS GAMING.SIMS_4_READ
+    COMMENT = 'Role for read-only access to GAMING SIMS_4 schema'
 ;
 
 -- confirm the database role was created
-SHOW DATABASE ROLES LIKE '{{read_role_name}}' IN DATABASE {{database_name}};
+SHOW DATABASE ROLES LIKE 'SIMS_4_READ' IN DATABASE GAMING;
 
 -- allows the role to use the database
-GRANT USAGE ON DATABASE {{database_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON DATABASE GAMING TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- allows the role to use the schema
-GRANT USAGE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- select grants
 -- tables
-GRANT SELECT ON ALL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- dynamic tables
-GRANT SELECT ON ALL DYNAMIC TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE DYNAMIC TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL DYNAMIC TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE DYNAMIC TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- external tables
-GRANT SELECT ON ALL EXTERNAL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE EXTERNAL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL EXTERNAL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE EXTERNAL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- iceberg tables
-GRANT SELECT ON ALL ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- interactive tables
-GRANT SELECT ON ALL INTERACTIVE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE INTERACTIVE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL INTERACTIVE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE INTERACTIVE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- views
-GRANT SELECT ON ALL VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- materliazlied views
-GRANT SELECT ON ALL MATERIALIZED VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT SELECT ON FUTURE MATERIALIZED VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT SELECT ON ALL MATERIALIZED VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT SELECT ON FUTURE MATERIALIZED VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- read grants
 -- stages
-GRANT READ ON ALL STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT READ ON FUTURE STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT READ ON ALL STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT READ ON FUTURE STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- usage grants (excluding database & schema grants)
 -- file formats
-GRANT USAGE ON ALL FILE FORMATS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE FILE FORMATS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL FILE FORMATS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE FILE FORMATS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- functions
-GRANT USAGE ON ALL FUNCTIONS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE FUNCTIONS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL FUNCTIONS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE FUNCTIONS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 -- stages
-GRANT USAGE ON ALL STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- confirm grants
-SHOW GRANTS TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+SHOW GRANTS TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 /*
 ### Optional Grants for Read-only Role
@@ -141,20 +141,20 @@ Uncomment the below to run the optional grants, *if needed*.
 */
 
 /*
-GRANT USAGE ON ALL STREAMLITS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE STREAMLITS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL STREAMLITS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE STREAMLITS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- workspaces
-GRANT USAGE ON ALL WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- notebooks
-GRANT USAGE ON ALL NOTEBOOKS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE NOTEBOOKS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL NOTEBOOKS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE NOTEBOOKS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 
 -- procedures
-GRANT USAGE ON ALL PROCEDURES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
-GRANT USAGE ON FUTURE PROCEDURES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{read_role_name}};
+GRANT USAGE ON ALL PROCEDURES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
+GRANT USAGE ON FUTURE PROCEDURES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_READ;
 */
 
 /*
@@ -171,64 +171,64 @@ This would be used for users who need to insert, update, or delete data.
 USE ROLE SECURITYADMIN;
 
 -- use database to create the database role
-USE DATABASE {{database_name}};
+USE DATABASE GAMING;
 
 -- create database role for modify access
-CREATE DATABASE ROLE IF NOT EXISTS {{database_name}}.{{modify_role_name}}
-    COMMENT = 'Role for modify / insert / update / delete access to {{database_name}} {{schema_name}} schema'
+CREATE DATABASE ROLE IF NOT EXISTS GAMING.SIMS_4_MODIFY
+    COMMENT = 'Role for modify / insert / update / delete access to GAMING SIMS_4 schema'
 ;
 
 -- confirm the database role was created
-SHOW DATABASE ROLES LIKE '{{modify_role_name}}' IN DATABASE {{database_name}};
+SHOW DATABASE ROLES LIKE 'SIMS_4_MODIFY' IN DATABASE GAMING;
 
 -- grant read role to modify role
-GRANT DATABASE ROLE {{database_name}}.{{read_role_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT DATABASE ROLE GAMING.SIMS_4_READ TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- usage grants
 -- procedures
-GRANT USAGE ON ALL PROCEDURES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT USAGE ON FUTURE PROCEDURES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT USAGE ON ALL PROCEDURES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT USAGE ON FUTURE PROCEDURES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 -- sequences
-GRANT USAGE ON ALL SEQUENCES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT USAGE ON FUTURE SEQUENCES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT USAGE ON FUTURE SEQUENCES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- insert grants
 -- tables
-GRANT INSERT ON ALL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT INSERT ON FUTURE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT INSERT ON ALL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT INSERT ON FUTURE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 -- iceberg tables
-GRANT INSERT ON ALL ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT INSERT ON FUTURE ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT INSERT ON ALL ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT INSERT ON FUTURE ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- delete grants
 -- tables
-GRANT DELETE ON ALL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT DELETE ON FUTURE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT DELETE ON ALL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT DELETE ON FUTURE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 -- iceberg tables
-GRANT DELETE ON ALL ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT DELETE ON FUTURE ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT DELETE ON ALL ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT DELETE ON FUTURE ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- truncate grants
 -- tables
-GRANT TRUNCATE ON ALL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT TRUNCATE ON FUTURE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT TRUNCATE ON ALL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT TRUNCATE ON FUTURE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 -- iceberg tables
-GRANT TRUNCATE ON ALL ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT TRUNCATE ON FUTURE ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT TRUNCATE ON ALL ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT TRUNCATE ON FUTURE ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- read grants
 -- stages
 --   this is included in the _READ role, but the direct grant is needed for the write grant
-GRANT READ ON ALL STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT READ ON FUTURE STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT READ ON ALL STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT READ ON FUTURE STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- write grants
 -- stages
-GRANT WRITE ON ALL STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
-GRANT WRITE ON FUTURE STAGES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+GRANT WRITE ON ALL STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
+GRANT WRITE ON FUTURE STAGES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 -- confirm grants
-SHOW GRANTS TO DATABASE ROLE {{database_name}}.{{modify_role_name}};
+SHOW GRANTS TO DATABASE ROLE GAMING.SIMS_4_MODIFY;
 
 /*
 ## Build Database Role Creation
@@ -248,41 +248,41 @@ This would be used for users who need to create presentation layer objects:
 USE ROLE SECURITYADMIN;
 
 -- use database to create the database role
-USE DATABASE {{database_name}};
+USE DATABASE GAMING;
 
 -- create database role for build access
-CREATE DATABASE ROLE IF NOT EXISTS {{database_name}}.{{build_role_name}}
-    COMMENT = 'Role for build access to {{database_name}} {{schema_name}} schema'
+CREATE DATABASE ROLE IF NOT EXISTS GAMING.SIMS_4_BUILD
+    COMMENT = 'Role for build access to GAMING SIMS_4 schema'
 ;
 
 -- confirm the database role was created
-SHOW DATABASE ROLES LIKE '{{build_role_name}}' IN DATABASE {{database_name}};
+SHOW DATABASE ROLES LIKE 'SIMS_4_BUILD' IN DATABASE GAMING;
 
 -- grant read role to build role
-GRANT DATABASE ROLE {{database_name}}.{{read_role_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT DATABASE ROLE GAMING.SIMS_4_READ TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 
 -- usage grants
 -- workspaces
-GRANT USAGE ON ALL WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
-GRANT USAGE ON FUTURE WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT USAGE ON ALL WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
+GRANT USAGE ON FUTURE WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 
 -- read grants
 -- workspaces
-GRANT READ ON ALL WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
-GRANT READ ON FUTURE WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT READ ON ALL WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
+GRANT READ ON FUTURE WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 
 -- create grants
 -- views
-GRANT CREATE VIEW ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT CREATE VIEW ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 -- materialized views
-GRANT CREATE MATERIALIZED VIEW ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT CREATE MATERIALIZED VIEW ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 -- notebooks
-GRANT CREATE NOTEBOOK ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT CREATE NOTEBOOK ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 -- workspaces
-GRANT CREATE WORKSPACE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+GRANT CREATE WORKSPACE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 
 -- confirm grants
-SHOW GRANTS TO DATABASE ROLE {{database_name}}.{{build_role_name}};
+SHOW GRANTS TO DATABASE ROLE GAMING.SIMS_4_BUILD;
 
 /*
 ## Engineer Database Role Creation
@@ -321,155 +321,155 @@ This would be used for users who need to create all objects, including:
 USE ROLE SECURITYADMIN;
 
 -- use database to create the database role
-USE DATABASE {{database_name}};
+USE DATABASE GAMING;
 
 -- create database role for engineer access
-CREATE DATABASE ROLE IF NOT EXISTS {{database_name}}.{{engineer_role_name}}
-    COMMENT = 'Role for engineer / architect access to {{database_name}} {{schema_name}} schema'
+CREATE DATABASE ROLE IF NOT EXISTS GAMING.SIMS_4_ENGINEER
+    COMMENT = 'Role for engineer / architect access to GAMING SIMS_4 schema'
 ;
 
 -- confirm the database role was created
-SHOW DATABASE ROLES LIKE '{{engineer_role_name}}' IN DATABASE {{database_name}};
+SHOW DATABASE ROLES LIKE 'SIMS_4_ENGINEER' IN DATABASE GAMING;
 
 -- grant read role to engineer role
-GRANT DATABASE ROLE {{database_name}}.{{read_role_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT DATABASE ROLE GAMING.SIMS_4_READ TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- grant modify role to engineer role
-GRANT DATABASE ROLE {{database_name}}.{{modify_role_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT DATABASE ROLE GAMING.SIMS_4_MODIFY TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- create grants
 -- artifact repositories
-GRANT CREATE ARTIFACT REPOSITORY ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE ARTIFACT REPOSITORY ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- backup sets
-GRANT CREATE BACKUP SET ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE BACKUP SET ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- dynamic tables
-GRANT CREATE DYNAMIC TABLE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE DYNAMIC TABLE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- external tables
-GRANT CREATE EXTERNAL TABLE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE EXTERNAL TABLE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- file formats
-GRANT CREATE FILE FORMAT ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE FILE FORMAT ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- functions
-GRANT CREATE FUNCTION ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE FUNCTION ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- hybrid tables
-GRANT CREATE HYBRID TABLE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE HYBRID TABLE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- iceberg tables
-GRANT CREATE ICEBERG TABLE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE ICEBERG TABLE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- image repositories
-GRANT CREATE IMAGE REPOSITORY ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE IMAGE REPOSITORY ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- models
-GRANT CREATE MODEL ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE MODEL ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- model monitors
-GRANT CREATE MODEL MONITOR ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE MODEL MONITOR ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- pipes
-GRANT CREATE PIPE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE PIPE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- procedures
-GRANT CREATE PROCEDURE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE PROCEDURE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- semantic views
-GRANT CREATE SEMANTIC VIEW ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE SEMANTIC VIEW ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- sequences
-GRANT CREATE SEQUENCE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE SEQUENCE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- snapshots
-GRANT CREATE SNAPSHOT ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE SNAPSHOT ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- classification profiles
-GRANT CREATE SNOWFLAKE.DATA_PRIVACY.CLASSIFICATION_PROFILE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE SNOWFLAKE.DATA_PRIVACY.CLASSIFICATION_PROFILE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- classifications
-GRANT CREATE SNOWFLAKE.ML.CLASSIFICATION ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE SNOWFLAKE.ML.CLASSIFICATION ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- forecasts
-GRANT CREATE SNOWFLAKE.ML.FORECAST ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE SNOWFLAKE.ML.FORECAST ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- stages
-GRANT CREATE STAGE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE STAGE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- streams
-GRANT CREATE STREAM ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE STREAM ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- tables
-GRANT CREATE TABLE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE TABLE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- tags
-GRANT CREATE TAG ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE TAG ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- tasks
-GRANT CREATE TASK ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE TASK ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- temporary tables
-GRANT CREATE TEMPORARY TABLE ON SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT CREATE TEMPORARY TABLE ON SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- monitor grants
 -- dynamic tables
-GRANT MONITOR ON ALL DYNAMIC TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT MONITOR ON FUTURE DYNAMIC TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT MONITOR ON ALL DYNAMIC TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT MONITOR ON FUTURE DYNAMIC TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- functions
-GRANT MONITOR ON ALL FUNCTIONS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT MONITOR ON FUTURE FUNCTIONS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT MONITOR ON ALL FUNCTIONS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT MONITOR ON FUTURE FUNCTIONS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- iceberg tables
-GRANT MONITOR ON ALL ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT MONITOR ON FUTURE ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT MONITOR ON ALL ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT MONITOR ON FUTURE ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- pipes
---GRANT MONITOR ON ALL PIPES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT MONITOR ON FUTURE PIPES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+--GRANT MONITOR ON ALL PIPES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT MONITOR ON FUTURE PIPES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- procedures
-GRANT MONITOR ON ALL PROCEDURES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT MONITOR ON FUTURE PROCEDURES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT MONITOR ON ALL PROCEDURES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT MONITOR ON FUTURE PROCEDURES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- semantic views
-GRANT MONITOR ON ALL SEMANTIC VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT MONITOR ON FUTURE SEMANTIC VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT MONITOR ON ALL SEMANTIC VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT MONITOR ON FUTURE SEMANTIC VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- operate grants
 -- dynamic tables
-GRANT OPERATE ON ALL DYNAMIC TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT OPERATE ON FUTURE DYNAMIC TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT OPERATE ON ALL DYNAMIC TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT OPERATE ON FUTURE DYNAMIC TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- pipes
---GRANT OPERATE ON ALL PIPES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT OPERATE ON FUTURE PIPES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+--GRANT OPERATE ON ALL PIPES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT OPERATE ON FUTURE PIPES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- read grants
 -- secrets
-GRANT READ ON ALL SECRETS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT READ ON FUTURE SECRETS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT READ ON ALL SECRETS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT READ ON FUTURE SECRETS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- git repositories
-GRANT READ ON ALL GIT REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT READ ON FUTURE GIT REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT READ ON ALL GIT REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT READ ON FUTURE GIT REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- image repositories
-GRANT READ ON ALL IMAGE REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT READ ON FUTURE IMAGE REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT READ ON ALL IMAGE REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT READ ON FUTURE IMAGE REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- rebuild grants
 -- tables
-GRANT REBUILD ON ALL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REBUILD ON FUTURE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REBUILD ON ALL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REBUILD ON FUTURE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- references grants
 -- external tables
-GRANT REFERENCES ON ALL EXTERNAL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REFERENCES ON FUTURE EXTERNAL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REFERENCES ON ALL EXTERNAL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REFERENCES ON FUTURE EXTERNAL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- iceberg tables
-GRANT REFERENCES ON ALL ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REFERENCES ON FUTURE ICEBERG TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REFERENCES ON ALL ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REFERENCES ON FUTURE ICEBERG TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- materialized views
-GRANT REFERENCES ON ALL MATERIALIZED VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REFERENCES ON FUTURE MATERIALIZED VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REFERENCES ON ALL MATERIALIZED VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REFERENCES ON FUTURE MATERIALIZED VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- semantic views
-GRANT REFERENCES ON ALL SEMANTIC VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REFERENCES ON FUTURE SEMANTIC VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REFERENCES ON ALL SEMANTIC VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REFERENCES ON FUTURE SEMANTIC VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- tables
-GRANT REFERENCES ON ALL TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REFERENCES ON FUTURE TABLES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REFERENCES ON ALL TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REFERENCES ON FUTURE TABLES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- views
-GRANT REFERENCES ON ALL VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT REFERENCES ON FUTURE VIEWS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT REFERENCES ON ALL VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT REFERENCES ON FUTURE VIEWS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- usage grants
 -- dbt projects
-GRANT USAGE ON ALL DBT PROJECTS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT USAGE ON FUTURE DBT PROJECTS IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT USAGE ON ALL DBT PROJECTS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT USAGE ON FUTURE DBT PROJECTS IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- write grants
 -- image repositories
-GRANT WRITE ON ALL IMAGE REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT WRITE ON FUTURE IMAGE REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT WRITE ON ALL IMAGE REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT WRITE ON FUTURE IMAGE REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- workspaces
-GRANT WRITE ON ALL WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT WRITE ON FUTURE WORKSPACES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT WRITE ON ALL WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT WRITE ON FUTURE WORKSPACES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 -- git repositories
-GRANT WRITE ON ALL GIT REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
-GRANT WRITE ON FUTURE GIT REPOSITORIES IN SCHEMA {{database_name}}.{{schema_name}} TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+GRANT WRITE ON ALL GIT REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
+GRANT WRITE ON FUTURE GIT REPOSITORIES IN SCHEMA GAMING.SIMS_4 TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 -- confirm grants
-SHOW GRANTS TO DATABASE ROLE {{database_name}}.{{engineer_role_name}};
+SHOW GRANTS TO DATABASE ROLE GAMING.SIMS_4_ENGINEER;
 
 /*
 # Results
@@ -479,6 +479,6 @@ Confirm all schemas and database roles were created successfully.
 
 USE ROLE SYSADMIN;
 
-SHOW SCHEMAS IN DATABASE {{database_name}};
+SHOW SCHEMAS IN DATABASE GAMING;
 
-SHOW DATABASE ROLES IN DATABASE {{database_name}};
+SHOW DATABASE ROLES IN DATABASE GAMING;

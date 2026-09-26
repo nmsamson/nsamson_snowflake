@@ -1,0 +1,2 @@
+# this is for running in VS Code Terminal; will run in the parent folder, so use relative path
+snow sql -f "" -c nsamson_snowflake
