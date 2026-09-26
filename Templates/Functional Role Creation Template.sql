@@ -59,7 +59,7 @@ Current access levels within schemas:
 - _READ (read-only access)
 - _MODIFY (can insert / update / delete data)
 - _BUILD (can create presentation-type objects on top of the data)
-- _ARCHITECT (can create new tables and other objects; just short of sysadmin)
+- _ENGINEER (can create new tables and other objects; just short of sysadmin)
 */
 
 -- switch to securityadmin for role grants
