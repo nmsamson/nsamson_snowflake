@@ -19,26 +19,26 @@ Prerequisites:
 */
 
 /*
-database_name = '{{database_name}}'
-database_comment = '{{database_comment}}'
+database_name = 'MAINTENANCE'
+database_comment = 'Database used for storing maintenance data, including change data capture details.'
 */
 
 -- sysadmin should be the owner of the database, and the role creating the database becomes the owner
 USE ROLE SYSADMIN;
 
 -- create the database if it doesn't exist; this protects and accidental re-run that drops the database and its data
-CREATE DATABASE IF NOT EXISTS {{database_name}}
-    COMMENT = '{{database_comment}}'
+CREATE DATABASE IF NOT EXISTS MAINTENANCE
+    COMMENT = 'Database used for storing maintenance data, including change data capture details.'
 ;
 
 -- confirm database creation
-SHOW DATABASES LIKE '{{database_name}}';
+SHOW DATABASES LIKE 'MAINTENANCE';
 
 -- drop the default public schema
-DROP SCHEMA IF EXISTS {{database_name}}.PUBLIC;
+DROP SCHEMA IF EXISTS MAINTENANCE.PUBLIC;
 
 -- confirm public schema was dropped
 SHOW SCHEMAS;
 
 -- allow securityadmin to create database roles
-GRANT CREATE DATABASE ROLE ON DATABASE {{database_name}} TO ROLE SECURITYADMIN;
+GRANT CREATE DATABASE ROLE ON DATABASE MAINTENANCE TO ROLE SECURITYADMIN;

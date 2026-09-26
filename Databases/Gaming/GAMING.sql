@@ -20,7 +20,7 @@ Prerequisites:
 
 /*
 database_name = 'GAMING'
-database_comment = '{{database_comment}}'
+database_comment = 'Database used for storing gaming data. This is where to find World of Warcraft, Sims 4, and Stardew Valley data.'
 */
 
 -- sysadmin should be the owner of the database, and the role creating the database becomes the owner
@@ -28,7 +28,7 @@ USE ROLE SYSADMIN;
 
 -- create the database if it doesn't exist; this protects and accidental re-run that drops the database and its data
 CREATE DATABASE IF NOT EXISTS GAMING
-    COMMENT = '{{database_comment}}'
+    COMMENT = 'Database used for storing gaming data. This is where to find World of Warcraft, Sims 4, and Stardew Valley data.'
 ;
 
 -- confirm database creation

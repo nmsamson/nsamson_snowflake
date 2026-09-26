@@ -19,26 +19,26 @@ Prerequisites:
 */
 
 /*
-database_name = '{{database_name}}'
-database_comment = '{{database_comment}}'
+database_name = 'INGESTION'
+database_comment = 'Database used for ingesting data into snowflake. This is a landing zone where data gets processed and move to its final destination.'
 */
 
 -- sysadmin should be the owner of the database, and the role creating the database becomes the owner
 USE ROLE SYSADMIN;
 
 -- create the database if it doesn't exist; this protects and accidental re-run that drops the database and its data
-CREATE DATABASE IF NOT EXISTS {{database_name}}
-    COMMENT = '{{database_comment}}'
+CREATE DATABASE IF NOT EXISTS INGESTION
+    COMMENT = 'Database used for ingesting data into snowflake. This is a landing zone where data gets processed and move to its final destination.'
 ;
 
 -- confirm database creation
-SHOW DATABASES LIKE '{{database_name}}';
+SHOW DATABASES LIKE 'INGESTION';
 
 -- drop the default public schema
-DROP SCHEMA IF EXISTS {{database_name}}.PUBLIC;
+DROP SCHEMA IF EXISTS INGESTION.PUBLIC;
 
 -- confirm public schema was dropped
 SHOW SCHEMAS;
 
 -- allow securityadmin to create database roles
-GRANT CREATE DATABASE ROLE ON DATABASE {{database_name}} TO ROLE SECURITYADMIN;
+GRANT CREATE DATABASE ROLE ON DATABASE INGESTION TO ROLE SECURITYADMIN;
