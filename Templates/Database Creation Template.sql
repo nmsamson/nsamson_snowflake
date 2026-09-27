@@ -42,3 +42,4 @@ SHOW SCHEMAS;
 
 -- allow securityadmin to create database roles
 GRANT CREATE DATABASE ROLE ON DATABASE {{database_name}} TO ROLE SECURITYADMIN;
+GRANT USAGE ON DATABASE {{database_name}} TO ROLE SECURITYADMIN;
