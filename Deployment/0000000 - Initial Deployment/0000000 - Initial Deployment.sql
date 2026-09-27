@@ -50,3 +50,9 @@
 !source "Databases/Governance/Security/Network Rules/GLOBAL_BLOCK_LIST.sql"
 -- Network policy deployment: GLOBAL_NETWORK_POLICY
 !source "Databases/Governance/Security/Network Policies/GLOBAL_NETWORK_POLICY.sql"
+-- Password policy deployment: GLOBAL_PASSWORD_POLICY
+!source "Databases/Governance/Security/Password Policies/GLOBAL_PASSWORD_POLICY.sql"
+-- Authentication policy deployment: SERVICE_AUTHENTICATION_POLICY
+!source "Databases/Governance/Security/Authentication Policies/SERVICE_AUTHENTICATION_POLICY.sql"
+-- Authentication policy deployment: PERSON_AUTHENTICATION_POLICY
+!source "Databases/Governance/Security/Authentication Policies/PERSON_AUTHENTICATION_POLICY.sql"
