@@ -43,3 +43,10 @@
 !source "Databases/Presentation/Stardew Valley/STARDEW_VALLEY.sql"
 -- Schema deployment: PRESENTATION.WORLD_OF_WARCRAFT
 !source "Databases/Presentation/World of Warcraft/WORLD_OF_WARCRAFT.sql"
+
+-- Network rule deployment: GLOBAL_ALLOW_LIST
+!source "Databases/Governance/Security/Network Rules/GLOBAL_ALLOW_LIST.sql"
+-- Network rule deployment: GLOBAL_BLOCK_LIST
+!source "Databases/Governance/Security/Network Rules/GLOBAL_BLOCK_LIST.sql"
+-- Network policy deployment: GLOBAL_NETWORK_POLICY
+!source "Databases/Governance/Security/Network Policies/GLOBAL_NETWORK_POLICY.sql"
