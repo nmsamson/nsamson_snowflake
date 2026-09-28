@@ -3,13 +3,25 @@
 
 -- Security integration deployment: WORLD_OF_WARCRAFT_CLIENT
 !source "Security/Integrations/WORLD_OF_WARCRAFT_CLIENT.sql"
+
+-- Secret deployment: CLIENT
+!source "Ingestion/World of Warcraft/Secrets/CLIENT.sql"
+
 -- External access integration deployment: WORLD_OF_WARCRAFT_CLIENT_ACCESS
 !source "Security/Integrations/WORLD_OF_WARCRAFT_CLIENT_ACCESS.sql"
+
 -- Security integration deployment: WORLD_OF_WARCRAFT_PROFILE
 --!source "Security/Integrations/WORLD_OF_WARCRAFT_PROFILE.sql"
 
--- Secret deployment: CLIENT
 -- Secret deployment: PROFILE
+--!source "Databases/Ingestion/World of Warcraft/Secrets/PROFILE.sql"
 
+-- External access integration deployment: WORLD_OF_WARCRAFT_PROFILE_ACCESS
+--!source "Security/Integrations/WORLD_OF_WARCRAFT_PROFILE_ACCESS.sql"
+
+-- Function deployment: GET_API_PART
+!source "Databases/Ingestion/World of Warcraft/Functions/GET_API_PART.sql"
+-- Function deployment: BUILD_API_URL
+!source "Databases/Ingestion/World of Warcraft/Functions/BUILD_API_URL.sql"
 -- Function deployment: CALL_CLIENT_API
 !source "Databases/Ingestion/World of Warcraft/Functions/CALL_CLIENT_API.sql"
